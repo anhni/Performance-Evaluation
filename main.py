@@ -16,7 +16,7 @@ interarrivalTimes = []
 
 def generator(env, number, interval):  # customer generator with interarrival times.
     """generator generates customers randomly"""
-    newSystem = System(env1, server1, server2)
+    newSystem = System(env1, bookingServer, notBookingServer, clinicalServer)
     for i in range(number):
         newPatient = Patient(env1, 'Customer %02d' % i)
         env.process(newPatient.joinSystem(env1, newSystem))
@@ -25,7 +25,9 @@ def generator(env, number, interval):  # customer generator with interarrival ti
 
 random.seed(random_seed)
 env1 = simpy.Environment()
-server1 = simpy.Resource(env1, capacity=1)  # capacity changes the number of generators in the system.
-server2 = simpy.Resource(env1, capacity=2)  # capacity changes the number of generators in the system.
+bookingServer = simpy.Resource(env1, capacity=1)  # capacity changes the number of generators in the system.
+notBookingServer = simpy.Resource(env1, capacity=2)
+clinicalServer = simpy.PriorityResource(env1, capacity=6)
+
 env1.process(generator(env1, new_customers, interarrival))
 env1.run()
