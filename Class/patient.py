@@ -20,8 +20,6 @@ class Patient ():
         self.leaveSystem = False
 
     def joinSystem(self, env, system):
-        # arrive = env.now
-        # print('%7.4f : Arrival time of %s' % (arrive, self.name))
         yield env.process(system.run(self))
 
 

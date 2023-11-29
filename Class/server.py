@@ -26,6 +26,7 @@ class Server():
         service_time = random.expovariate(self.serviceTime)
 
         if (self.priority == False):
+            # Non-Priority Server
             with self.resource.request() as req:      
                 yield req
 
@@ -50,7 +51,7 @@ class Server():
                 self.workingTime.append(service_time)
                 print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))
         else :
-            
+            # Priority Server
             with self.resource.request(patient.ticketNumber, False) as req:      
                 yield req
 
@@ -59,7 +60,7 @@ class Server():
                 # Calculate join time, time between 2 joins
                 if self.patientNumber > 1 :
                     self.joinTime.append(self.env.now - self.lastTimeinServer)
-                    # print("between time: %7.4f" % (env.now - self.lastTimeinServer))
+
                 self.lastTimeinServer = self.env.now
 
                 # Patient get number ticket
