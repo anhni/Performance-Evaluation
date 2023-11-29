@@ -48,5 +48,5 @@ class Server():
             self.workingTime.append(service_time)
             print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, self.system.patient.name, self.serverName, service_time, self.system.patient.ticketNumber))
             
-            print("haha")
+            
 
