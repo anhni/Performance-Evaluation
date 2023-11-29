@@ -3,12 +3,14 @@ import simpy
 import numpy as np
 from random import seed
 from Class.patient import *
+from Class.system import *
+from Class.server import *
 import statistics
 
 
 seed(2983)  # for seed of randint function
 random_seed = 32  # for seed of other random generators
-new_customers = 10  # Total number of customers in the system
+new_customers = 20  # Total number of customers in the system
 interarrival = np.random.poisson(0.1, size=None)  # Generate new customers roughly every x seconds
 maxWaitingTimeOfCustomer = np.random.poisson(4, size=None)
 patientNumber = 0
@@ -36,6 +38,7 @@ testingServer = simpy.Resource(env1, capacity=2)
 
 newSystem = System(env1, bookingServer, notBookingServer, clinicalServer, pharmacyServer, specializedServer, testingServer)
 
+hahaServer = Server("haha", simpy.Resource(env1, capacity=2), newSystem, 3, True)
 
 env1.process(generator(env1, new_customers, interarrival))
 env1.run()
