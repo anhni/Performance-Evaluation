@@ -10,7 +10,7 @@ class System():
         self.env = env
 
         # Server
-        self.bookingqueue = Server("Booking Server", bookingqueue, self, 6, True, False)
+        self.bookingqueue = Server("Booking Server", bookingqueue, self, serviceTime=6, getTicket=True, priority=False)
         self.notbookingqueue = Server("Not Booking Server", notbookingqueue, self, 5, True, False)
         self.clinicalServer = Server("clinical Server", clinicalServer, self, 2, False, True)
         self.pharmacyServer = Server("pharmacy Server", pharmacyServer, self, 3, False, False)
@@ -92,20 +92,20 @@ class System():
             print("-----%s-----" % (server.serverName))
             if len(server.workingTime) > 0:
                 average_serviceTime = statistics.mean(server.workingTime)
-                # print("Average Interarrival Time Is : %7.4f" % average_interarrival)
-                print("Average Service Time Is : %7.4f" % average_serviceTime)
+
+                print("Average Service Time Is : %7.4f h" % average_serviceTime)
 
             if len(server.waitingTime) > 0:
                 average_waitingTime = statistics.mean(server.waitingTime)
-                print("Average Waiting Time Is : %7.4f" % average_waitingTime)
+                print("Average Waiting Time Is : %7.4f h" % average_waitingTime)
 
             if len(server.joinTime) > 0:
                 average_joinTime = statistics.mean(server.joinTime)
-                print("Average Time between 2 joins Is : %7.4f" % average_joinTime)
+                print("Average Time between 2 joins Is : %7.4f h" % average_joinTime)
             
-            print("Number of customer joins server Is : %7.4f" % server.patientNumber)
+            print("Number of patients join server Is : %7.4f h" % server.patientNumber)
 
         print("---------------")
         if len(self.timeInSystem) > 0:
                 average_timeInSystem = statistics.mean(self.timeInSystem)
-                print("Average Time in System Is : %7.4f" % average_timeInSystem)
+                print("Average Time in System Is : %7.4f h" % average_timeInSystem)
