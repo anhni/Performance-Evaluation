@@ -36,28 +36,29 @@ pharmacyServer = simpy.Resource(env1, capacity=3)
 specializedServer = simpy.Resource(env1, capacity=4)
 testingServer = simpy.Resource(env1, capacity=2)
 
+# testBookingServer = Server("Booking Server", bookingServer, newSystem, 3, True)
 newSystem = System(env1, bookingServer, notBookingServer, clinicalServer, pharmacyServer, specializedServer, testingServer)
 
-hahaServer = Server("haha", simpy.Resource(env1, capacity=2), newSystem, 3, True)
 
 env1.process(generator(env1, new_customers, interarrival))
 env1.run()
 
-print("----booking server----")
-newSystem.calculatorTime(newSystem.WT_bookingqueue, newSystem.ST_bookingqueue, newSystem.JT_bookingqueue, newSystem.NC_bookingqueue)
+newSystem.calculator()
+# print("----booking server----")
+# newSystem.calculatorTime(newSystem.WT_bookingqueue, newSystem.ST_bookingqueue, newSystem.JT_bookingqueue, newSystem.NC_bookingqueue)
 
-print("----not booking server----")
-newSystem.calculatorTime(newSystem.WT_notbookingqueue, newSystem.ST_notbookingqueue, newSystem.JT_notbookingqueue, newSystem.NC_notbookingqueue)
+# print("----not booking server----")
+# newSystem.calculatorTime(newSystem.WT_notbookingqueue, newSystem.ST_notbookingqueue, newSystem.JT_notbookingqueue, newSystem.NC_notbookingqueue)
 
-print("----clinical server----")
-newSystem.calculatorTime(newSystem.WT_clinicalServer, newSystem.ST_clinicalServer, newSystem.JT_clinicalServer, newSystem.NC_clinicalServer)
+# print("----clinical server----")
+# newSystem.calculatorTime(newSystem.WT_clinicalServer, newSystem.ST_clinicalServer, newSystem.JT_clinicalServer, newSystem.NC_clinicalServer)
 
-print("----pharmacy area server----")
-newSystem.calculatorTime(newSystem.WT_pharmacyServer, newSystem.ST_pharmacyServer, newSystem.JT_pharmacyServer, newSystem.NC_pharmacyServer)
+# print("----pharmacy area server----")
+# newSystem.calculatorTime(newSystem.WT_pharmacyServer, newSystem.ST_pharmacyServer, newSystem.JT_pharmacyServer, newSystem.NC_pharmacyServer)
 
-print("----minor surgery server----")
-newSystem.calculatorTime(newSystem.WT_sugeryServer, newSystem.ST_sugeryServer, newSystem.JT_sugeryServer, newSystem.NC_sugeryServer)
+# print("----minor surgery server----")
+# newSystem.calculatorTime(newSystem.WT_sugeryServer, newSystem.ST_sugeryServer, newSystem.JT_sugeryServer, newSystem.NC_sugeryServer)
 
-print("----testing room server----")
-newSystem.calculatorTime(newSystem.WT_testingServer, newSystem.ST_testingServer, newSystem.JT_testingServer, newSystem.NC_testingServer)
+# print("----testing room server----")
+# newSystem.calculatorTime(newSystem.WT_testingServer, newSystem.ST_testingServer, newSystem.JT_testingServer, newSystem.NC_testingServer)
 
