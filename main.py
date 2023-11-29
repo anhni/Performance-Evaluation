@@ -6,9 +6,9 @@ from Class.patient import *
 import statistics
 
 
-seed(29343)  # for seed of randint function
+seed(2983)  # for seed of randint function
 random_seed = 32  # for seed of other random generators
-new_customers = 3  # Total number of customers in the system
+new_customers = 10  # Total number of customers in the system
 interarrival = np.random.poisson(0.1, size=None)  # Generate new customers roughly every x seconds
 maxWaitingTimeOfCustomer = np.random.poisson(4, size=None)
 patientNumber = 0
@@ -41,20 +41,20 @@ env1.process(generator(env1, new_customers, interarrival))
 env1.run()
 
 print("----booking server----")
-newSystem.calculatorTime(newSystem.WT_bookingqueue, newSystem.ST_bookingqueue, newSystem.NC_bookingqueue)
+newSystem.calculatorTime(newSystem.WT_bookingqueue, newSystem.ST_bookingqueue, newSystem.JT_bookingqueue, newSystem.NC_bookingqueue)
 
 print("----not booking server----")
-newSystem.calculatorTime(newSystem.WT_notbookingqueue, newSystem.ST_notbookingqueue, newSystem.NC_notbookingqueue)
+newSystem.calculatorTime(newSystem.WT_notbookingqueue, newSystem.ST_notbookingqueue, newSystem.JT_notbookingqueue, newSystem.NC_notbookingqueue)
 
 print("----clinical server----")
-newSystem.calculatorTime(newSystem.WT_clinicalServer, newSystem.ST_clinicalServer, newSystem.NC_clinicalServer)
+newSystem.calculatorTime(newSystem.WT_clinicalServer, newSystem.ST_clinicalServer, newSystem.JT_clinicalServer, newSystem.NC_clinicalServer)
 
 print("----pharmacy area server----")
-newSystem.calculatorTime(newSystem.WT_pharmacyServer, newSystem.ST_pharmacyServer, newSystem.NC_pharmacyServer)
+newSystem.calculatorTime(newSystem.WT_pharmacyServer, newSystem.ST_pharmacyServer, newSystem.JT_pharmacyServer, newSystem.NC_pharmacyServer)
 
 print("----minor surgery server----")
-newSystem.calculatorTime(newSystem.WT_sugeryServer, newSystem.ST_sugeryServer, newSystem.NC_sugeryServer)
+newSystem.calculatorTime(newSystem.WT_sugeryServer, newSystem.ST_sugeryServer, newSystem.JT_sugeryServer, newSystem.NC_sugeryServer)
 
 print("----testing room server----")
-newSystem.calculatorTime(newSystem.WT_testingServer, newSystem.ST_testingServer, newSystem.NC_testingServer)
+newSystem.calculatorTime(newSystem.WT_testingServer, newSystem.ST_testingServer, newSystem.JT_testingServer, newSystem.NC_testingServer)
 
