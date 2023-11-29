@@ -19,7 +19,11 @@ class Patient ():
 
         self.leaveSystem = False
 
+        self.joinSystemTime = 0
+        self.leaveSystemTime = 0
+
     def joinSystem(self, env, system):
+        self.joinSystemTime = env.now
         yield env.process(system.run(self))
 
 

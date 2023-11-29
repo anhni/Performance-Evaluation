@@ -25,6 +25,8 @@ class System():
         self.server.append(self.testingServer)
         self.server.append(self.sugeryServer)
 
+        self.timeInSystem = []
+
         self.ticketNumber = 0
 
     def run(self, patient):
@@ -52,7 +54,7 @@ class System():
             if(patient.joinPharmacy):
                 yield self.env.process(self.pharmacyServer.joinServer(patient))
                 patient.joinPharmacy = False
-
+                self.TimeInSystem(patient)
                 patient.leaveSystem = True
 
             if(patient.joinTesting):
@@ -63,6 +65,7 @@ class System():
                 if ratio < 0.6:    
                     patient.joinPharmacy = True
                 else:
+                    self.TimeInSystem(patient)
                     patient.leaveSystem = True
 
             if(patient.joinSurgery):
@@ -72,11 +75,17 @@ class System():
                 if ratio < 0.8:    
                     patient.joinPharmacy = True
                 else:
+                    
+                    self.TimeInSystem(patient)
                     patient.leaveSystem = True
              
     def getTicket(self, patient):
         patient.ticketNumber = self.ticketNumber
         self.ticketNumber += 1 
+    
+    def TimeInSystem(self, patient):
+        patient.leaveSystemTime = self.env.now
+        self.timeInSystem.append(patient.leaveSystemTime - patient.joinSystemTime)
 
     def calculator(self):
         for server in self.server :
@@ -95,3 +104,8 @@ class System():
                 print("Average Time between 2 joins Is : %7.4f" % average_joinTime)
             
             print("Number of customer joins server Is : %7.4f" % server.patientNumber)
+
+        print("---------------")
+        if len(self.timeInSystem) > 0:
+                average_timeInSystem = statistics.mean(self.timeInSystem)
+                print("Average Time in System Is : %7.4f" % average_timeInSystem)
