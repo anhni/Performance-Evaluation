@@ -4,6 +4,9 @@ import simpy
 import statistics
 from Class.patient import *
 from Class.server import *
+import math
+import matplotlib.pyplot as plt
+
 
 class System():
     def __init__(self, env, bookingqueue, notbookingqueue, clinicalServer, pharmacyServer, testingServer, sugeryServer) -> None:
@@ -109,3 +112,57 @@ class System():
         if len(self.timeInSystem) > 0:
                 average_timeInSystem = statistics.mean(self.timeInSystem)
                 print("Average Time in System Is : %7.4f h" % average_timeInSystem)
+        
+        
+    def calculate_batch_means(self, batch_size):
+        batch_variances = []       
+        batch_means_server = []
+        for num_batch in range(2, batch_size + 2):
+            print("num batch %i: "% num_batch)
+            
+            batch_means = []
+            for server in self.server :
+                print("Sever working time %i :"%len(server.workingTime))
+                num_batches = math.floor(len(server.workingTime)/num_batch)
+                # print(num_batches)
+                for num in range(num_batch):
+
+                    batch_mean_list = []
+                    for i in range(num_batches):
+                        if len(server.workingTime) > (i + num*10) :
+                            batch_mean_list.append(server.workingTime[i + num*10])
+                    
+                    
+                    if(len(batch_mean_list) > 1):
+                        batch_mean = statistics.mean(batch_mean_list) 
+                        batch_means.append(batch_mean)                 
+                        
+                # print("len batch %i"%len(batch_means))
+                    # overall_mean = statistics.mean(batch_means)
+            if(len(batch_means) > 1):
+                print(len(batch_means))
+                batch_means_server.append(statistics.mean(batch_means))
+                print("len batch all server %i : %7.4f"%(len(batch_means_server), batch_means_server[-1]))
+
+            if(len(batch_means_server) > 1):
+                batch_variance = statistics.variance(batch_means_server)
+                batch_variances.append(batch_variance)
+
+        print("Size of batch_variances:", len(batch_variances)) 
+        
+        return batch_variances
+    
+    def histogram_batch_means(self, batch_size):
+        # Calculate batch means and plot the variances over batches
+        batch_variances = self.calculate_batch_means(batch_size)
+        # num_batches = math.floor(len(self.server[1].workingTime)/num_batches)
+        
+        # if len(batch_variances) < num_batches:
+        #     print("Warning: Not enough data for all batches.")
+        #     num_batches = len(batch_variances)
+
+        plt.plot(range(2, len(batch_variances) + 2), batch_variances, marker='.')
+        plt.xlabel('Batch Number')
+        plt.ylabel('Variance of Batch Means')
+        plt.title('Batch Means Method - Working Time')
+        plt.show()

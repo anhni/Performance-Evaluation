@@ -42,14 +42,14 @@ class Server():
                 if(self.getTicket):
                     self.system.getTicket(patient)
 
-                print('%7.4f : %s join %s[%i/%i] after wait %7.4f' % (self.env.now, patient.name, self.serverName, self.resource.count, self.resource.capacity, self.env.now-arrive))
+                # print('%7.4f : %s join %s[%i/%i] after wait %7.4f' % (self.env.now, patient.name, self.serverName, self.resource.count, self.resource.capacity, self.env.now-arrive))
                 
                 self.waitingTime.append(self.env.now - arrive)
 
                 yield self.env.timeout(service_time)
                 
                 self.workingTime.append(service_time)
-                print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))
+                # print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))
         else :
             # Priority Server
             with self.resource.request(patient.ticketNumber, False) as req:      
@@ -67,14 +67,14 @@ class Server():
                 if(self.getTicket):
                     self.system.getTicket(patient)
 
-                print('%7.4f : %s join %s[%i/%i] after wait %7.4f' % (self.env.now, patient.name, self.serverName, self.resource.count, self.resource.capacity, self.env.now-arrive))
+                # print('%7.4f : %s join %s[%i/%i] after wait %7.4f' % (self.env.now, patient.name, self.serverName, self.resource.count, self.resource.capacity, self.env.now-arrive))
                 
                 self.waitingTime.append(self.env.now - arrive)
 
                 yield self.env.timeout(service_time)
                 
                 self.workingTime.append(service_time)
-                print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))
+                # print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))
 
 
                

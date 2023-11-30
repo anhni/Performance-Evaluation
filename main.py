@@ -7,7 +7,7 @@ from Class.system import *
 
 # seed(2983)  # for seed of randint function
 # random_seed = 31  # for seed of other random generatorss
-new_customers = 20  # Total number of customers in the system
+new_customers = 100  # Total number of customers in the system
 interarrival = np.random.poisson(0.1, size=None)  # Generate new customers roughly every x seconds
 maxWaitingTimeOfCustomer = np.random.poisson(4, size=None)
 
@@ -36,5 +36,5 @@ env1.process(generator(env1, new_customers, interarrival))
 env1.run()
 
 newSystem.calculator()
-
+newSystem.histogram_batch_means(10)
 
