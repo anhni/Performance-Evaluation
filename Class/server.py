@@ -22,24 +22,30 @@ class Server():
 
         self.numberPatientWait = 0
         self.waitingQueue = []
+        self.inServer = []
 
     def joinServer(self, patient):
         arrive = self.env.now
         service_time = random.expovariate(self.serviceTime)
         
+        # Patient join waiting queue
         self.numberPatientWait +=1
         self.waitingQueue.append([self.numberPatientWait, arrive])
 
         if (self.priority == False):
-            # Non-Priority Server
+            ### Non-Priority Server
             with self.resource.request() as req:
-
                 yield req
 
-                self.numberPatientWait -=1
+                # Patient left waiting queue and join server
+                self.numberPatientWait -= 1
                 self.waitingQueue.append([self.numberPatientWait, self.env.now])
 
+                # Count patient join server
                 self.patientNumber += 1 
+
+                # Calculate patient join server
+                self.inServer.append([self.resource.count, self.env.now])
 
                 # Calculate join time, time between 2 joins
                 if self.patientNumber > 1 :
@@ -59,15 +65,23 @@ class Server():
                 
                 self.workingTime.append(service_time)
                 # print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))
+            
+            # Calculate patient leave server
+            self.inServer.append([self.resource.count, self.env.now])
         else :
             # Priority Server
             with self.resource.request(patient.ticketNumber, False) as req:      
                 yield req
 
+                # Patient left waiting queue and join server
                 self.numberPatientWait -=1
                 self.waitingQueue.append([self.numberPatientWait, self.env.now])
 
+                # Count patient join server
                 self.patientNumber += 1 
+
+                # Calculate patient join server
+                self.inServer.append([self.resource.count, self.env.now])
 
                 # Calculate join time, time between 2 joins
                 if self.patientNumber > 1 :
@@ -87,6 +101,8 @@ class Server():
                 
                 self.workingTime.append(service_time)
                 # print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))     
-               
+
+        # Calculate patient leave server
+        self.inServer.append([self.resource.count, self.env.now])              
 
 

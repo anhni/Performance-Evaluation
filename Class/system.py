@@ -237,3 +237,61 @@ class System():
 
         # Show the plot
         plt.show()
+    
+    def patientInServer(self):
+        time_all = []
+        patientInServer_all = []
+        for server in self.server:
+            time = []
+            patientInServer = []
+            # print(self.server[1].inServer)
+            for i in range(len(server.inServer)):
+                time.append(server.inServer[i][1])
+                patientInServer.append(server.inServer[i][0])
+            time_all.append(time)
+            patientInServer_all.append(patientInServer)
+
+        fig, ax = plt.subplots(3, 2, figsize=(8, 12))
+
+
+        # Plot the first chart
+        ax[0, 0].plot(time_all[0], patientInServer_all[0], 'r-', label='Booking Server')
+        ax[0, 0].set_xlabel('Time')
+        ax[0, 0].set_ylabel('Number patient in Server')
+        ax[0, 0].legend()
+
+        # Plot the second chart
+        ax[0, 1].plot(time_all[1], patientInServer_all[1], 'g-', label='Not Booking Server')
+        ax[0, 1].set_xlabel('Time')
+        ax[0, 1].set_ylabel('Number patient in Server')
+        ax[0, 1].legend()
+
+        # Plot the third chart
+        ax[1, 0].plot(time_all[2], patientInServer_all[2], 'b-', label='Clinical Server')
+        ax[1, 0].set_xlabel('Time')
+        ax[1, 0].set_ylabel('Number patient in Server')
+        ax[1, 0].legend()
+
+                # Plot the first chart
+        ax[1, 1].plot(time_all[3], patientInServer_all[3], 'p-', label='Pharmarcy Server')
+        ax[1, 1].set_xlabel('Time')
+        ax[1, 1].set_ylabel('Number patient in Server')
+        ax[1, 1].legend()
+
+        # Plot the second chart
+        ax[2, 0].plot(time_all[4], patientInServer_all[4], 'y-', label='Testing server')
+        ax[2, 0].set_xlabel('Time')
+        ax[2, 0].set_ylabel('Number patient in Server')
+        ax[2, 0].legend()
+
+        # Plot the third chart
+        ax[2, 1].plot(time_all[5], patientInServer_all[5], 'm-', label='Surgery Server')
+        ax[2, 1].set_xlabel('Time')
+        ax[2, 1].set_ylabel('Number patient in Server')
+        ax[2, 1].legend()
+
+        # Adjust the spacing between subplots
+        plt.tight_layout()
+
+        # Show the plot
+        plt.show()

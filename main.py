@@ -35,7 +35,16 @@ newSystem = System(env1, bookingServer, notBookingServer, clinicalServer, pharma
 env1.process(generator(env1, new_customers, interarrival))
 env1.run()
 
-newSystem.calculator()
-newSystem.histogram_batch_means(10)
-newSystem.QueueInServer()
+### calculate time
+# newSystem.calculator()
+
+### transient chart
+# newSystem.histogram_batch_means(10)
+
+### patient in queue of each server
+# newSystem.QueueInServer()
+
+### patient in server (Busy system chart)
+newSystem.patientInServer()
+
 
