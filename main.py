@@ -37,4 +37,5 @@ env1.run()
 
 newSystem.calculator()
 newSystem.histogram_batch_means(10)
+newSystem.QueueInServer()
 

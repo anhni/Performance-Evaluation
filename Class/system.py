@@ -30,6 +30,7 @@ class System():
         self.server.append(self.sugeryServer)
 
         self.timeInSystem = []
+
         self.averageTime = []
 
         self.ticketNumber = 0
@@ -97,16 +98,18 @@ class System():
             # print("-----%s-----" % (server.serverName))
             if len(server.workingTime) > 0:
                 average_serviceTime = statistics.mean(server.workingTime)
-
                 # print("Average Service Time Is : %7.4f h" % average_serviceTime)
+            else: average_serviceTime = 0
 
             if len(server.waitingTime) > 0:
                 average_waitingTime = statistics.mean(server.waitingTime)
                 # print("Average Waiting Time Is : %7.4f h" % average_waitingTime)
+            else: average_waitingTime = 0
 
             if len(server.joinTime) > 0:
                 average_joinTime = statistics.mean(server.joinTime)
                 # print("Average Time between 2 joins Is : %7.4f h" % average_joinTime)
+            else: average_joinTime = 0
             
             # print("Number of patients join server Is : %7.4f h" % server.patientNumber)
 
@@ -175,4 +178,62 @@ class System():
         plt.xlabel('Batch Number')
         plt.ylabel('Variance of Batch Means')
         plt.title('Batch Means Method - Working Time')
+        plt.show()
+
+    def QueueInServer(self):
+        time_all = []
+        numberQueue_all = []
+        for server in self.server:
+            time = []
+            numerQueue = []
+            # print(self.server[1].waitingQueue)
+            for i in range(len(server.waitingQueue)):
+                time.append(server.waitingQueue[i][1])
+                numerQueue.append(server.waitingQueue[i][0])
+            time_all.append(time)
+            numberQueue_all.append(numerQueue)
+
+        fig, ax = plt.subplots(3, 2, figsize=(8, 12))
+
+
+        # Plot the first chart
+        ax[0, 0].plot(time_all[0], numberQueue_all[0], 'r-', label='Booking Server')
+        ax[0, 0].set_xlabel('Time')
+        ax[0, 0].set_ylabel('Number patient wait in queue')
+        ax[0, 0].legend()
+
+        # Plot the second chart
+        ax[0, 1].plot(time_all[1], numberQueue_all[1], 'g-', label='Not Booking Server')
+        ax[0, 1].set_xlabel('Time')
+        ax[0, 1].set_ylabel('Number patient wait in queue')
+        ax[0, 1].legend()
+
+        # Plot the third chart
+        ax[1, 0].plot(time_all[2], numberQueue_all[2], 'b-', label='Clinical Server')
+        ax[1, 0].set_xlabel('Time')
+        ax[1, 0].set_ylabel('Number patient wait in queue')
+        ax[1, 0].legend()
+
+                # Plot the first chart
+        ax[1, 1].plot(time_all[3], numberQueue_all[3], 'p-', label='Pharmarcy Server')
+        ax[1, 1].set_xlabel('Time')
+        ax[1, 1].set_ylabel('Number patient wait in queue')
+        ax[1, 1].legend()
+
+        # Plot the second chart
+        ax[2, 0].plot(time_all[4], numberQueue_all[4], 'y-', label='Testing server')
+        ax[2, 0].set_xlabel('Time')
+        ax[2, 0].set_ylabel('Number patient wait in queue')
+        ax[2, 0].legend()
+
+        # Plot the third chart
+        ax[2, 1].plot(time_all[5], numberQueue_all[5], 'm-', label='Surgery Server')
+        ax[2, 1].set_xlabel('Time')
+        ax[2, 1].set_ylabel('Number patient wait in queue')
+        ax[2, 1].legend()
+
+        # Adjust the spacing between subplots
+        plt.tight_layout()
+
+        # Show the plot
         plt.show()

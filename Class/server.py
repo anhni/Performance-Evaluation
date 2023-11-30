@@ -19,16 +19,25 @@ class Server():
         self.patientNumber = 0 # Number customer join server
         self.joinTime = [] # Time patient join server
         self.lastTimeinServer = 0 # time that last time patient in server
-        self.join = False
+
+        self.numberPatientWait = 0
+        self.waitingQueue = []
 
     def joinServer(self, patient):
         arrive = self.env.now
         service_time = random.expovariate(self.serviceTime)
+        
+        self.numberPatientWait +=1
+        self.waitingQueue.append([self.numberPatientWait, arrive])
 
         if (self.priority == False):
             # Non-Priority Server
-            with self.resource.request() as req:      
+            with self.resource.request() as req:
+
                 yield req
+
+                self.numberPatientWait -=1
+                self.waitingQueue.append([self.numberPatientWait, self.env.now])
 
                 self.patientNumber += 1 
 
@@ -55,6 +64,9 @@ class Server():
             with self.resource.request(patient.ticketNumber, False) as req:      
                 yield req
 
+                self.numberPatientWait -=1
+                self.waitingQueue.append([self.numberPatientWait, self.env.now])
+
                 self.patientNumber += 1 
 
                 # Calculate join time, time between 2 joins
@@ -74,9 +86,7 @@ class Server():
                 yield self.env.timeout(service_time)
                 
                 self.workingTime.append(service_time)
-                # print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))
-
-
+                # print('%7.4f : %s leave %s after %7.4f with number ticket %i' % (self.env.now, patient.name, self.serverName, service_time, patient.ticketNumber))     
                
 
 
