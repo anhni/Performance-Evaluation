@@ -6,6 +6,7 @@ from Class.patient import *
 from Class.server import *
 import math
 import matplotlib.pyplot as plt
+from tabulate import tabulate
 
 
 class System():
@@ -29,6 +30,7 @@ class System():
         self.server.append(self.sugeryServer)
 
         self.timeInSystem = []
+        self.averageTime = []
 
         self.ticketNumber = 0
 
@@ -92,37 +94,45 @@ class System():
 
     def calculator(self):
         for server in self.server :
-            print("-----%s-----" % (server.serverName))
+            # print("-----%s-----" % (server.serverName))
             if len(server.workingTime) > 0:
                 average_serviceTime = statistics.mean(server.workingTime)
 
-                print("Average Service Time Is : %7.4f h" % average_serviceTime)
+                # print("Average Service Time Is : %7.4f h" % average_serviceTime)
 
             if len(server.waitingTime) > 0:
                 average_waitingTime = statistics.mean(server.waitingTime)
-                print("Average Waiting Time Is : %7.4f h" % average_waitingTime)
+                # print("Average Waiting Time Is : %7.4f h" % average_waitingTime)
 
             if len(server.joinTime) > 0:
                 average_joinTime = statistics.mean(server.joinTime)
-                print("Average Time between 2 joins Is : %7.4f h" % average_joinTime)
+                # print("Average Time between 2 joins Is : %7.4f h" % average_joinTime)
             
-            print("Number of patients join server Is : %7.4f h" % server.patientNumber)
+            # print("Number of patients join server Is : %7.4f h" % server.patientNumber)
+
+            self.averageTime.append([server.serverName, average_serviceTime, average_waitingTime, average_joinTime, server.patientNumber])
+        
+        head = ["Server Name", "Average Service Time", "Average Waiting Time", "Average Time between 2 joins", "Number of patients"]
+ 
+        # display table
+        print(tabulate(self.averageTime, headers=head, tablefmt="grid"))
 
         print("---------------")
         if len(self.timeInSystem) > 0:
                 average_timeInSystem = statistics.mean(self.timeInSystem)
                 print("Average Time in System Is : %7.4f h" % average_timeInSystem)
+        print("---------------")
         
         
     def calculate_batch_means(self, batch_size):
         batch_variances = []       
         batch_means_server = []
         for num_batch in range(2, batch_size + 2):
-            print("num batch %i: "% num_batch)
+            # print("num batch %i: "% num_batch)
             
             batch_means = []
             for server in self.server :
-                print("Sever working time %i :"%len(server.workingTime))
+                # print("Sever working time %i :"%len(server.workingTime))
                 num_batches = math.floor(len(server.workingTime)/num_batch)
                 # print(num_batches)
                 for num in range(num_batch):
@@ -140,15 +150,15 @@ class System():
                 # print("len batch %i"%len(batch_means))
                     # overall_mean = statistics.mean(batch_means)
             if(len(batch_means) > 1):
-                print(len(batch_means))
+                # print(len(batch_means))
                 batch_means_server.append(statistics.mean(batch_means))
-                print("len batch all server %i : %7.4f"%(len(batch_means_server), batch_means_server[-1]))
+                # print("len batch all server %i : %7.4f"%(len(batch_means_server), batch_means_server[-1]))
 
             if(len(batch_means_server) > 1):
                 batch_variance = statistics.variance(batch_means_server)
                 batch_variances.append(batch_variance)
 
-        print("Size of batch_variances:", len(batch_variances)) 
+        # print("Size of batch_variances:", len(batch_variances)) 
         
         return batch_variances
     
